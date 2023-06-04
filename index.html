@@ -86,7 +86,7 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -102,7 +102,132 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    // Console Log
+    errorBtns[0].addEventListener('click', e => {
+      console.log("Console Log");
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new Error ("At least one value is invalid!");
+        }
+      } catch (error) {
+        console.log(error);
+      } 
+    });
+    // Console Error
+    errorBtns[1].addEventListener('click', e => {
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error) {
+        console.error("Output is invalid!");
+      } finally {
+        console.log("Completed the process of checking output.");
+      }
+    });
+    // Console Count - counts the occurence of the numbers in the inputs
+    errorBtns[2].addEventListener('click', e => {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      console.count(firstNum);
+      console.count(secondNum);
+    });
+    // Console Warn
+    errorBtns[3].addEventListener('click', e => {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      if (firstNum == secondNum) {
+        console.warn("The two inputs contain the same value.");
+      }
+    });
+    // Console Assert - make sure first value is smaller than second value
+    errorBtns[4].addEventListener('click', e => {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      const reason = "first value should not be greater than second value";
+      console.assert(firstNum <= secondNum, {firstNum, secondNum, reason});
+    });
+    // Console Clear
+    errorBtns[5].addEventListener('click', e => {
+      console.clear();
+    });
+    // Console Dir - prints JSON representation of this button
+    errorBtns[6].addEventListener('click', e => {
+      console.dir(errorBtns[6]);
+    });
+    // Console dirxml - prints XML representation of the page
+    errorBtns[7].addEventListener('click', e => {
+      console.dirxml(errorBtns[6]);
+    });
+
+    const label = "Group";
+    let setNum = 1;
+
+    // Console Group Start
+    errorBtns[8].addEventListener('click', e => {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      console.group(label + " " + setNum);
+      setNum++;
+    });
+
+    // Console Group End
+    errorBtns[9].addEventListener('click', e => {
+      console.groupEnd(label + " " + setNum);
+    });
+
+    // Console Table
+    errorBtns[10].addEventListener('click', e => {
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      var table = [
+        {
+          firstValue: firstNum,
+        },
+        {
+          secondValue: secondNum,
+        }
+      ];
+      console.table(table);
+    });
+
+    // Start Time
+    errorBtns[11].addEventListener('click', e => {
+      console.time("Timer Button");
+    });
+
+    // End Timer
+    errorBtns[12].addEventListener('click', e => {
+      console.timeEnd("Timer Button");
+    });
+
+    // Console Trace - trace this button
+    errorBtns[13].addEventListener('click', function handleBtnClick(e) {
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+      deep();
+    });
+    
+    // Trigger a Global Error
+    errorBtns[14].addEventListener('click', function handleBtnClick(e) {
+        boom();
+    });
+    window.onerror = function(error) {
+      console.log('Global Error');
+      TrackJS.track(error);
+      return true;
+    };
+    window.TrackJS && TrackJS.install({ 
+      token: "dea0e8bad0b74e4c864fb4117b6a3d61",
+      application: "lab9-thanhsophia"
+    });  
   </script>
+  
 </body>
 
 </html>
